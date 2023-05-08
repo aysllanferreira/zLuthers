@@ -39,4 +39,30 @@ export class AuthService {
       );
     });
   }
+
+  authenticateUser(user: { email: string; password: string }) {
+    const { email, password } = user;
+
+    const authenticationDetails = new AuthenticationDetails({
+      Username: email,
+      Password: password,
+    });
+    const userData = {
+      Username: email,
+      Pool: this.userPool,
+    };
+
+    const newUser = new CognitoUser(userData);
+
+    return new Promise((resolve, reject) => {
+      return newUser.authenticateUser(authenticationDetails, {
+        onSuccess: (result) => {
+          resolve(result);
+        },
+        onFailure: (err) => {
+          reject(err);
+        },
+      });
+    });
+  }
 }
