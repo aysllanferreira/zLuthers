@@ -65,4 +65,24 @@ export class AuthService {
       });
     });
   }
+
+  confirmUser(user: { email: string; confirmationCode: string }) {
+    const { email, confirmationCode } = user;
+    const userData = {
+      Username: email,
+      Pool: this.userPool,
+    };
+
+    const newUser = new CognitoUser(userData);
+
+    return new Promise((resolve, reject) => {
+      newUser.confirmRegistration(confirmationCode, true, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
 }

@@ -32,4 +32,15 @@ export class AuthController {
       throw new BadRequestException(e.message);
     }
   }
+
+  @Post('confirm')
+  async confirm(
+    @Body() confirmRequest: { email: string; confirmationCode: string },
+  ) {
+    try {
+      return await this.authService.confirmUser(confirmRequest);
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
 }
